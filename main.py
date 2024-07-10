@@ -1,5 +1,6 @@
 import torch
 import random
+import matplotlib.pyplot as plt
 
 # Initialize Parameters
 popSize = 100  # Number of individuals in the population
@@ -53,15 +54,24 @@ def mutate(offspring):
 # Main genetic algorithm
 def genetic_algorithm():
     population = initialize_population()
+    bestFit = []
     for generation in range(gens):
         fit = torch.tensor([fitness(individual) for individual in population])
+        bestFit.append(fit.max().item())
         parents = select_parents(population, fit)
         offspring = crossover(parents)
         population = mutate(offspring)
-    return population
+    return population, bestFit
+
+def plot(fitness):
+    plt.plot(fitness)
+    plt.xlabel('Generation')
+    plt.ylabel('Best Fitness')
+    plt.title('Best Fitness Over Generations')
+    plt.show()
 
 # Run everything
-finalPop = genetic_algorithm()
+finalPop, bestFit = genetic_algorithm()
 best = max(finalPop, key=fitness)
 stats = {
     f'Binary Gene {i+1}': gene.item() for i, gene in enumerate(best[:bin_len])
@@ -71,3 +81,4 @@ stats.update({
 })
 
 print(stats, fitness(best).item())
+plot(bestFit)

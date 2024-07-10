@@ -2,3 +2,7 @@ This program uses genetic algorithms to optimize a set of binary and continuous 
 
 Libraries Used:
 PyTorch
+
+Matplotlib
+
+Random
